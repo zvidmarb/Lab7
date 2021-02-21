@@ -101,8 +101,8 @@
         document.getElementById('recordForm').style.display = "none";
         document.getElementById('recordIDcontainer').style.display = "none";
 
-        let URL = window.prompt("Enter record id", "default");
-        endpoint = endpoint.value + "/" + URL;
+        let URL = window.prompt("Enter record id");
+        URL = endpoint.value + "/" + URL;
         
         const response = await fetch(endpoint.value); //store fetched response
         const json = await response.json();
@@ -114,7 +114,7 @@
       // From the 4 CRUD actions, this is the CREATE action, and uses the POST http method.
       // The main difference from updateRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
-      async function createRecord() {
+      async function createRecord(action) {
         document.getElementById('recordForm').style.display = "inline";
         document.getElementById('recordIDcontainer').style.display = "none";
 
@@ -125,12 +125,12 @@
           }
 
           const response = await fetch(endpoint.value, {
-            method: POST,
+            method: 'POST',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify(data)
           });
 
-          const json = await response.json()
+          const json = await response.json();
 
           if (JSON.stringify(json) == "{}") {
             output.value = "Network Error: 404";
@@ -145,20 +145,20 @@
       // From the 4 CRUD actions, this is the UPDATE action, and uses the PUT http method.
       // The main difference from createRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
-      async function updateRecord() {
+      async function updateRecord(action) {
         document.getElementById('recordForm').style.display = "inline";
         document.getElementById('recordIDcontainer').style.display = "inline";
 
         let URL = endpoint.value + "/" + recordID.value;
 
         if (action == 'submit') {
-          let data = {
+          var data = {
             title: title.value,
             author: author.value,
           }
         }
         const response = await fetch(URL, {
-          method: PUT,
+          method: 'PUT',
           headers: {'Content-type': 'application/json'},
             body: JSON.stringify(data)
         });
@@ -182,7 +182,7 @@
         document.getElementById('recordForm').style.display = "none";
         document.getElementById('recordIDcontainer').style.display = "none";
 
-        let URL = window.prompt('Enter record id', 'default');
+        let URL = window.prompt('Enter record id');
         URL = endpoint.value + "/" + URL;
 
         await fetch(URL, {

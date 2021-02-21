@@ -1,5 +1,16 @@
 {
-  "posts": [],
+  "posts": [
+    {
+      "title": "update",
+      "author": "update",
+      "id": 1
+    },
+    {
+      "title": "john biography",
+      "author": "john",
+      "id": 2
+    }
+  ],
   "comments": [],
   "profile": {
     "name": "typicode"

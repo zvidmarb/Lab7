@@ -83,32 +83,94 @@
       // From the 4 CRUD actions, this is the READ action, and uses the GET http method.
       // The main difference from fetchOne() will be the URL you request from; check
       // the writeup to view the URL pattern for fetch one and fetch all
-      function fetchAll() {
-        // TODO
+      async function fetchAll() {
+        document.getElementById('recordForm').style.display = "none";
+        document.getElementById('recordIDcontainer').style.display = "none";
+
+        const response = await fetch(endpoint.value); //store fetched response
+        const json = await response.json();
+        output.value = JSON.stringify(json)
+
       }
 
       // This function should fetch one entry from the given endpoint.
       // From the 4 CRUD actions, this is the READ action, and uses the GET http method.
       // The main difference from fetchAll() will be the URL you request from; check
       // the writeup to view the URL pattern for fetch one and fetch all
-      function fetchOne() {
-        // TODO
+      async function fetchOne() {
+        document.getElementById('recordForm').style.display = "none";
+        document.getElementById('recordIDcontainer').style.display = "none";
+
+        let URL = window.prompt("Enter record id", "default");
+        endpoint = endpoint.value + "/" + URL;
+        
+        const response = await fetch(endpoint.value); //store fetched response
+        const json = await response.json();
+        output.value = JSON.stringify(json);
+
       }
 
       // This function should use fetch to create one entry in the given endpoint.
       // From the 4 CRUD actions, this is the CREATE action, and uses the POST http method.
       // The main difference from updateRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
-      function createRecord() {
-        // TODO
+      async function createRecord() {
+        document.getElementById('recordForm').style.display = "inline";
+        document.getElementById('recordIDcontainer').style.display = "none";
+
+        if (action == 'submit') {
+          let data = {
+            title: title.value,
+            author: author.value
+          }
+
+          const response = await fetch(endpoint.value, {
+            method: POST,
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify(data)
+          });
+
+          const json = await response.json()
+
+          if (JSON.stringify(json) == "{}") {
+            output.value = "Network Error: 404";
+          } else {
+            output.value = JSON.stringify(json);
+          }
+        }
+        
       }
 
       // This function should use fetch to update one existing entry in the given endpoint.
       // From the 4 CRUD actions, this is the UPDATE action, and uses the PUT http method.
       // The main difference from createRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
-      function updateRecord() {
-        // TODO
+      async function updateRecord() {
+        document.getElementById('recordForm').style.display = "inline";
+        document.getElementById('recordIDcontainer').style.display = "inline";
+
+        let URL = endpoint.value + "/" + recordID.value;
+
+        if (action == 'submit') {
+          let data = {
+            title: title.value,
+            author: author.value,
+          }
+        }
+        const response = await fetch(URL, {
+          method: PUT,
+          headers: {'Content-type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+
+        const json = await response.json()
+
+        if (JSON.stringify(json) == "{}") {
+          output.value = "Network Error: 404";
+        } else {
+          output.value = JSON.stringify(json);
+        } 
+        
       }
 
       // This function should use fetch to delete one existing entry in the given endpoint.
@@ -116,8 +178,29 @@
       // The main difference from fetchOne() will be the HTTP method you use to make your
       // request; check the writeup to view the URL pattern for get one and delete. THERE IS NO 
       // delete all, only delete one.
-      function deleteRecord() {
-        // TODO
+      async function deleteRecord() {
+        document.getElementById('recordForm').style.display = "none";
+        document.getElementById('recordIDcontainer').style.display = "none";
+
+        let URL = window.prompt('Enter record id', 'default');
+        URL = endpoint.value + "/" + URL;
+
+        await fetch(URL, {
+          method: 'DELETE',
+          headers: {'Content-type': 'application/json'},
+        })
+        .then(function(response){
+          if(!response.ok){
+            throw Error(response.statusText);
+          }
+          return response;
+        }).then(function(response){
+            console.log('ok');
+
+        }).catch(function(err){
+            output.value = "Network Error: 404";
+            console.log(err);
+        });
       }
 
       window.addEventListener('DOMContentLoaded', () => {
